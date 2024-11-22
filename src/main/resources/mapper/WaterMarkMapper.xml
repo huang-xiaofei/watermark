@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learn.watermark.mapper.WaterMarkMapper">
+    <resultMap id="BaseResultMap" type="com.learn.watermark.domain.WaterMark">
+        <result column="id" property="id" />
+        <result column="image" property="image" />
+        <result column="marked_image" property="markedImage" />
+        <result column="image_name" property="imageName" />
+        <result column="create_time" property="createTime" />
+        <result column="seed" property="seed" />
+        <result column="private_key" property="privateKey" />
+        <result column="public_key" property="publicKey" />
+        <result column="water_text" property="waterText" />
+    </resultMap>
+
+    <!-- 表字段 -->
+    <sql id="baseColumns">
+        t.id
+        , t.image
+        , t.marked_image
+        , t.image_name
+        , t.create_time
+        , t.seed
+        , t.private_key
+        , t.public_key
+        , t.water_text
+    </sql>
+
+
+    <!-- 查询全部（条件查询）  自己需要依据查询条件选择那些字段留下来 -->
+    <select id="queryWaterMarkByConditions" parameterType="com.learn.watermark.domain.WaterMark" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM water_mark t
+        where 1=1
+        <if test="image != null" > AND image=#{image}  </if>
+        <if test="markedImage != null" > AND marked_image=#{markedImage}  </if>
+        <if test="imageName != null" > AND image_name=#{imageName}  </if>
+        <if test="createTime != null" > AND create_time=#{createTime}  </if>
+        <if test="seed != null" > AND seed=#{seed}  </if>
+        <if test="privateKey != null" > AND private_key=#{privateKey}  </if>
+        <if test="publicKey != null" > AND public_key=#{publicKey}  </if>
+        <if test="waterText != null" > AND water_text=#{waterText}  </if>
+
+    </select>
+
+    <!-- 查询全部 -->
+    <select id="listAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM water_mark t
+    </select>
+
+    <!-- 根据主键获取单条记录 -->
+    <select id="getById" resultMap="BaseResultMap" parameterType="Integer">
+        SELECT
+        <include refid="baseColumns" />
+        FROM water_mark t
+        WHERE id = #{id}
+    </select>
+
+    <!-- 插入全部字段 -->
+    <insert id="insert" parameterType="com.learn.watermark.domain.WaterMark"
+            keyProperty="id" keyColumn="id" useGeneratedKeys="true" >
+        INSERT INTO water_mark
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            image,
+            marked_image,
+            image_name,
+            create_time,
+            seed,
+            private_key,
+            public_key,
+            water_text,
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            #{id},
+            #{image},
+            #{markedImage},
+            #{imageName},
+            #{createTime},
+            #{seed},
+            #{privateKey},
+            #{publicKey},
+            #{waterText},
+        </trim>
+    </insert>
+
+    <!-- 插入不为NULL的字段 -->
+    <insert id="insertIgnoreNull" parameterType="com.learn.watermark.domain.WaterMark"
+            keyProperty="id" keyColumn="id" useGeneratedKeys="true" >
+        INSERT INTO water_mark
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null"> id,  </if>
+            <if test="image != null"> image,  </if>
+            <if test="markedImage != null"> marked_image,  </if>
+            <if test="imageName != null"> image_name,  </if>
+            <if test="createTime != null"> create_time,  </if>
+            <if test="seed != null"> seed,  </if>
+            <if test="privateKey != null"> private_key,  </if>
+            <if test="publicKey != null"> public_key,  </if>
+            <if test="waterText != null"> water_text,  </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null" >  #{id}, </if>
+            <if test="image != null" >  #{image}, </if>
+            <if test="markedImage != null" >  #{markedImage}, </if>
+            <if test="imageName != null" >  #{imageName}, </if>
+            <if test="createTime != null" >  #{createTime}, </if>
+            <if test="seed != null" >  #{seed}, </if>
+            <if test="privateKey != null" >  #{privateKey}, </if>
+            <if test="publicKey != null" >  #{publicKey}, </if>
+            <if test="waterText != null" >  #{waterText}, </if>
+        </trim>
+    </insert>
+
+    <!-- 更新,更新全部字段 -->
+    <update id="update" parameterType="com.learn.watermark.domain.WaterMark">
+        UPDATE water_mark
+        <set>
+            image=#{image},
+            marked_image=#{markedImage},
+            image_name=#{imageName},
+            create_time=#{createTime},
+            seed=#{seed},
+            private_key=#{privateKey},
+            public_key=#{publicKey},
+            water_text=#{waterText},
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <!-- 更新不为NULL的字段 -->
+    <update id="updateIgnoreNull" parameterType="com.learn.watermark.domain.WaterMark">
+        UPDATE water_mark
+        <set>
+            <if test="image != null" >  image=#{image}, </if>
+            <if test="markedImage != null" >  marked_image=#{markedImage}, </if>
+            <if test="imageName != null" >  image_name=#{imageName}, </if>
+            <if test="createTime != null" >  create_time=#{createTime}, </if>
+            <if test="seed != null" >  seed=#{seed}, </if>
+            <if test="privateKey != null" >  private_key=#{privateKey}, </if>
+            <if test="publicKey != null" >  public_key=#{publicKey}, </if>
+            <if test="waterText != null" >  water_text=#{waterText}, </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <!-- 根据主键删除记录 -->
+    <delete id="delete" parameterType="com.learn.watermark.domain.WaterMark">
+        DELETE FROM water_mark WHERE id = #{id}
+    </delete>
+
+
+</mapper>

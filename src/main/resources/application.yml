@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring.datasource:
+  url: jdbc:mysql://localhost:3300/stu?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8&serverTimezone=UTC&allowMultiQueries=true&rewriteBatchedStatements=true
+  username: root
+  password: admin
+  driver-class-name: com.mysql.jdbc.Driver
+  type: com.alibaba.druid.pool.DruidDataSource
+  #连接池初始化大小，最小，最大
+  initialSize: 50
+  minIdle: 20
+  maxActive: 100
+  #配置获取连接等待超时的时间
+  maxWait: 60000
+  #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+  timeBetweenEvictionRunsMillis: 60000
+  #配置一个连接在池中最小生存的时间，单位是毫秒
+  minEvictableIdleTimeMillis: 300000
+  #用来检测连接是否有效的sql
+  validationQuery: SELECT 1 FROM dual
+  testWhileIdle: true
+  # 配置监控统计拦截的filters,去掉后，监控界面的sql无法统计
+  filters: stat,wall,log4j
+
+logging:
+  level:
+    com.springboot.cloud: info
+    java.sql.PreparedStatement: info
+  path: logs/
+  file:
+    max-size: 1GB
+
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mybatis:
+    mapper-locations: mapper/*.xml
+    type-aliases-package: com.entity
